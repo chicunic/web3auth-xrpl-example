@@ -1,2 +1,56 @@
-# web3auth-xrpl-example
-React + Vite example using MetaMask Embedded Wallets (powered by Web3Auth) on the XRP Ledger (XRPL). 
+# MetaMask Embedded Wallets — XRP Ledger (XRPL)
+
+React + Vite example using MetaMask Embedded Wallets (powered by Web3Auth) on the **XRP Ledger (XRPL)**. After social login, the app exports the private key and uses the xrpl.js library to sign transactions and submit them to the XRP Ledger.
+
+Adapted from [Web3Auth/web3auth-examples/other/xrpl-example](https://github.com/Web3Auth/web3auth-examples/tree/main/other/xrpl-example).
+
+## Prerequisites
+
+- Node.js 24+
+- pnpm
+- A Client ID from the [Dashboard](https://dashboard.web3auth.io)
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/chicunic/web3auth-xrpl-example.git
+cd web3auth-xrpl-example
+```
+
+### 2. Install dependencies
+
+```bash
+pnpm install
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```
+VITE_WEB3AUTH_CLIENT_ID=YOUR_CLIENT_ID
+```
+
+### 4. Run the application
+
+```bash
+pnpm dev
+```
+
+Visit `http://localhost:5173` in your browser.
+
+## Resources
+
+- [MetaMask Embedded Wallets Documentation](https://docs.metamask.io/embedded-wallets/)
+- [Dashboard](https://dashboard.web3auth.io)
+- [Community — Builder Hub](https://builder.metamask.io/c/embedded-wallets/5)
+
+## License
+
+[MIT](LICENSE)

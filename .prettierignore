@@ -1,0 +1,14 @@
+*
+!*.css
+!*.html
+!*.js
+!*.json
+!*.md
+!*.ts
+!*.tsx
+!*.yaml
+!*.yml
+!.vscode/
+!src/
+pnpm-lock.yaml
+pnpm-workspace.yaml
