@@ -7,10 +7,12 @@ import { XrplPrivateKeyProvider } from '@web3auth/modal/providers/xrpl-provider'
 const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID as string;
 // IMP END - Dashboard Registration
 
+const XRPL_TESTNET_CHAIN_ID = '0x6';
+
 // Chain configuration for XRPL
 const chain = {
   chainNamespace: CHAIN_NAMESPACES.XRPL,
-  chainId: '0x6',
+  chainId: XRPL_TESTNET_CHAIN_ID,
   rpcTarget: 'https://testnet-ripple-node.tor.us',
   wsTarget: 'wss://s.altnet.rippletest.net:51233',
   ticker: 'XRP',
@@ -28,9 +30,9 @@ const privateKeyProvider = new XrplPrivateKeyProvider({
 // IMP START - Instantiate SDK
 const web3AuthOptions: Web3AuthOptions = {
   clientId,
-  privateKeyProvider: privateKeyProvider as Web3AuthOptions['privateKeyProvider'],
+  privateKeyProvider,
   chains: [chain],
-  defaultChainId: '0x6',
+  defaultChainId: XRPL_TESTNET_CHAIN_ID,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
 };
 // IMP END - Instantiate SDK

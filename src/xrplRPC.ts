@@ -1,28 +1,32 @@
 import type { IProvider } from '@web3auth/modal';
 import { type Payment, convertStringToHex, xrpToDrops } from 'xrpl';
 
+async function fetchAccountInfo(
+  provider: IProvider,
+): Promise<Record<string, Record<string, string> | undefined> | string> {
+  const accounts = await provider.request<never, string[]>({
+    method: 'xrpl_getAccounts',
+  });
+  const [account] = accounts ?? [];
+  if (!account) {
+    return 'No accounts found, please report this issue.';
+  }
+  return (await provider.request({
+    method: 'account_info',
+    params: [
+      {
+        account,
+        strict: true,
+        ledger_index: 'current',
+        queue: true,
+      },
+    ],
+  })) as Record<string, Record<string, string> | undefined>;
+}
+
 export async function getAccounts(provider: IProvider): Promise<unknown> {
   try {
-    const accounts = await provider.request<never, string[]>({
-      method: 'xrpl_getAccounts',
-    });
-    console.log('accounts', accounts);
-    if (accounts) {
-      const accInfo = await provider.request({
-        method: 'account_info',
-        params: [
-          {
-            account: accounts[0],
-            strict: true,
-            ledger_index: 'current',
-            queue: true,
-          },
-        ],
-      });
-      return accInfo;
-    } else {
-      return 'No accounts found, please report this issue.';
-    }
+    return await fetchAccountInfo(provider);
   } catch (error) {
     console.error('Error', error);
     return error;
@@ -31,26 +35,9 @@ export async function getAccounts(provider: IProvider): Promise<unknown> {
 
 export async function getBalance(provider: IProvider): Promise<unknown> {
   try {
-    const accounts = await provider.request<never, string[]>({
-      method: 'xrpl_getAccounts',
-    });
-
-    if (accounts) {
-      const accInfo = (await provider.request({
-        method: 'account_info',
-        params: [
-          {
-            account: accounts[0],
-            strict: true,
-            ledger_index: 'current',
-            queue: true,
-          },
-        ],
-      })) as Record<string, Record<string, string> | undefined>;
-      return accInfo.account_data?.Balance;
-    } else {
-      return 'No accounts found, please report this issue.';
-    }
+    const accInfo = await fetchAccountInfo(provider);
+    if (typeof accInfo === 'string') return accInfo;
+    return accInfo.account_data?.Balance;
   } catch (error) {
     console.error('Error', error);
     return error;
@@ -69,7 +56,7 @@ export async function signMessage(provider: IProvider): Promise<unknown> {
     });
     return txSign;
   } catch (error) {
-    console.log('error', error);
+    console.error('Error', error);
     return error;
   }
 }
@@ -80,10 +67,11 @@ export async function signAndSendTransaction(provider: IProvider): Promise<unkno
       method: 'xrpl_getAccounts',
     });
 
-    if (accounts && accounts.length > 0) {
+    const [account] = accounts ?? [];
+    if (account) {
       const tx: Payment = {
         TransactionType: 'Payment',
-        Account: accounts[0] as string,
+        Account: account,
         Amount: xrpToDrops(2),
         Destination: 'raYzhtCitpdZivyVN2XBj2xvHKSmBjft2n',
       };
@@ -98,7 +86,7 @@ export async function signAndSendTransaction(provider: IProvider): Promise<unkno
       return 'failed to fetch accounts';
     }
   } catch (error) {
-    console.log('error', error);
+    console.error('Error', error);
     return error;
   }
 }

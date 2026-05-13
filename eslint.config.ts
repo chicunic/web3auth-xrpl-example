@@ -7,8 +7,14 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default defineConfig({
   files: ['src/**/*.{ts,tsx}'],
-  extends: [eslint.configs.recommended, ...tseslint.configs.strictTypeChecked, eslintConfigPrettier],
-  plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
+  extends: [
+    eslint.configs.recommended,
+    ...tseslint.configs.strictTypeChecked,
+    ...tseslint.configs.stylisticTypeChecked,
+    reactHooks.configs.flat['recommended-latest'],
+    reactRefresh.configs.vite,
+    eslintConfigPrettier,
+  ],
   languageOptions: {
     parserOptions: {
       projectService: true,
@@ -16,9 +22,9 @@ export default defineConfig({
     },
   },
   rules: {
-    ...reactHooks.configs.recommended.rules,
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'sort-imports': ['error', { ignoreDeclarationSort: true }],
+    'object-shorthand': ['error', 'always'],
     '@typescript-eslint/unbound-method': 'off',
   },
 });

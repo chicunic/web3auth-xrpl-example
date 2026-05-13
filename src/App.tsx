@@ -4,7 +4,7 @@ import { getAccounts, getBalance, signAndSendTransaction, signMessage } from './
 
 function App() {
   const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
-  const { disconnect: doDisconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
+  const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
   const { provider } = useWeb3Auth();
 
@@ -85,7 +85,7 @@ function App() {
           </button>
         </div>
         <div>
-          <button onClick={() => void doDisconnect()} className="card">
+          <button onClick={() => void disconnect()} className="card">
             Log Out
           </button>
           {disconnectLoading && <div className="loading">Disconnecting...</div>}

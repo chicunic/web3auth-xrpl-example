@@ -8,7 +8,10 @@ import web3AuthContextConfig from './web3authContext';
 
 import App from './App';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element #root not found');
+
+ReactDOM.createRoot(rootElement).render(
   // IMP START - Setup Web3Auth Provider
   <Web3AuthProvider config={web3AuthContextConfig}>
     <App />

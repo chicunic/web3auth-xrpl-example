@@ -33,7 +33,7 @@ cp .env.example .env
 
 Edit `.env`:
 
-```
+```text
 VITE_WEB3AUTH_CLIENT_ID=YOUR_CLIENT_ID
 ```
 
