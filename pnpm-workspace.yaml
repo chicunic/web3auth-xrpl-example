@@ -1,5 +1,11 @@
 allowBuilds:
-  bufferutil: true
-  esbuild: true
-  tiny-secp256k1: true
-  utf-8-validate: true
+  protobufjs: true
+overrides:
+  xrpl: ^5.0.0
+  ws: ^8.21.0
+  uuid: ^14.0.1
+  js-cookie: ^3.0.8
+  ripple-keypairs: ^3.0.0
+  elliptic: "npm:empty-npm-package@1.0.0"
+patchedDependencies:
+  '@web3auth/no-modal': patches/@web3auth__no-modal.patch

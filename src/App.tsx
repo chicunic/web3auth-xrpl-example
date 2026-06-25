@@ -1,12 +1,53 @@
 import './App.css';
+import { useEffect, useState } from 'react';
+import { WALLET_CONNECTORS } from '@web3auth/modal';
 import { useWeb3Auth, useWeb3AuthConnect, useWeb3AuthDisconnect, useWeb3AuthUser } from '@web3auth/modal/react';
 import { getAccounts, getBalance, signAndSendTransaction, signMessage } from './xrplRPC';
 
 function App() {
-  const { connect, isConnected, loading: connectLoading, error: connectError } = useWeb3AuthConnect();
+  const { connect, isConnected, error: connectError } = useWeb3AuthConnect();
   const { disconnect, loading: disconnectLoading, error: disconnectError } = useWeb3AuthDisconnect();
   const { userInfo } = useWeb3AuthUser();
-  const { provider } = useWeb3Auth();
+  const { web3Auth } = useWeb3Auth();
+
+  const provider = web3Auth?.getConnector(WALLET_CONNECTORS.AUTH)?.provider ?? null;
+
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  useEffect(() => {
+    if (isConnected) {
+      // Defer state update to avoid 'set-state-in-effect' warning
+      setTimeout(() => {
+        setIsLoggingIn(false);
+      }, 0);
+
+      // Find the Web3Auth modal overlay and hide it programmatically
+      // This avoids !important CSS rules and correctly overrides inline styles
+      const w3aModal = document.getElementById('w3a-modal') ?? document.querySelector('[id^="w3a-"]');
+      if (w3aModal) {
+        w3aModal.style.visibility = 'hidden';
+        w3aModal.style.opacity = '0';
+        w3aModal.style.pointerEvents = 'none';
+      }
+    }
+  }, [isConnected]);
+
+  const handleLogin = async () => {
+    setIsLoggingIn(true);
+    try {
+      // Restore modal visibility right before attempting to connect again
+      const w3aModal = document.getElementById('w3a-modal') ?? document.querySelector('[id^="w3a-"]');
+      if (w3aModal) {
+        w3aModal.style.visibility = '';
+        w3aModal.style.opacity = '';
+        w3aModal.style.pointerEvents = '';
+      }
+      await connect();
+    } catch (err) {
+      console.error(err);
+      setIsLoggingIn(false);
+    }
+  };
 
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector('#console>p');
@@ -101,10 +142,10 @@ function App() {
   const unloggedInView = (
     // IMP START - Login
     <div className="grid">
-      <button onClick={() => void connect()} className="card">
+      <button onClick={() => void handleLogin()} className="card">
         Login
       </button>
-      {connectLoading && <div className="loading">Connecting...</div>}
+      {isLoggingIn && <div className="loading">Connecting...</div>}
       {connectError && <div className="error">{connectError.message}</div>}
     </div>
     // IMP END - Login

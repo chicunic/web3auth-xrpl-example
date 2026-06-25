@@ -3,8 +3,13 @@ import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
-  plugins: [react(), nodePolyfills()],
+  plugins: [react(), nodePolyfills({ exclude: ['crypto'] })],
   define: {
     global: 'globalThis',
+  },
+  server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
   },
 });

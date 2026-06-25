@@ -9,38 +9,39 @@ const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID as string;
 
 const XRPL_TESTNET_CHAIN_ID = '0x6';
 
-// Chain configuration for XRPL
-const chain = {
-  chainNamespace: CHAIN_NAMESPACES.XRPL,
-  chainId: XRPL_TESTNET_CHAIN_ID,
-  rpcTarget: 'https://testnet-ripple-node.tor.us',
-  wsTarget: 'wss://s.altnet.rippletest.net:51233',
-  ticker: 'XRP',
-  tickerName: 'XRPL',
-  displayName: 'xrpl testnet',
-  blockExplorerUrl: 'https://testnet.xrpl.org',
-  logo: '',
-};
+export function getWeb3AuthContextConfig() {
+  // Chain configuration for XRPL
+  const chain = {
+    chainNamespace: CHAIN_NAMESPACES.XRPL,
+    chainId: XRPL_TESTNET_CHAIN_ID,
+    rpcTarget: 'https://testnet-ripple-node.tor.us',
+    wsTarget: 'wss://s.altnet.rippletest.net:51233',
+    ticker: 'XRP',
+    tickerName: 'XRPL',
+    displayName: 'xrpl testnet',
+    blockExplorerUrl: 'https://testnet.xrpl.org',
+    logo: '',
+  };
+  // Create XRPL private key provider
+  const privateKeyProvider = new XrplPrivateKeyProvider({
+    config: { chain, chains: [chain] },
+  });
 
-// Create XRPL private key provider
-const privateKeyProvider = new XrplPrivateKeyProvider({
-  config: { chain, chains: [chain] },
-});
+  // IMP START - Instantiate SDK
+  const web3AuthOptions: Web3AuthOptions = {
+    clientId,
+    privateKeyProvider,
+    chains: [chain],
+    defaultChainId: XRPL_TESTNET_CHAIN_ID,
+    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  };
+  // IMP END - Instantiate SDK
 
-// IMP START - Instantiate SDK
-const web3AuthOptions: Web3AuthOptions = {
-  clientId,
-  privateKeyProvider,
-  chains: [chain],
-  defaultChainId: XRPL_TESTNET_CHAIN_ID,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-};
-// IMP END - Instantiate SDK
+  // IMP START - Instantiate SDK
+  const web3AuthContextConfig = {
+    web3AuthOptions,
+  };
+  // IMP END - Instantiate SDK
 
-// IMP START - Instantiate SDK
-const web3AuthContextConfig = {
-  web3AuthOptions,
-};
-// IMP END - Instantiate SDK
-
-export default web3AuthContextConfig;
+  return web3AuthContextConfig;
+}

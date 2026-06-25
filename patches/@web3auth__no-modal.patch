@@ -1,0 +1,58 @@
+diff --git a/dist/lib.cjs/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js b/dist/lib.cjs/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
+index 9d33f952fb012f2f109bb53b1c10efe05dc3765f..c69c0383a33f55bd6e40f637bdfae1fe43a074a5 100644
+--- a/dist/lib.cjs/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
++++ b/dist/lib.cjs/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
+@@ -105,7 +105,8 @@ class XrplPrivateKeyProvider extends baseProvider.BaseProvider {
+     if (!chainId) throw auth.rpcErrors.invalidParams("chainId is required while lookupNetwork");
+     const pingResponse = await this._providerEngineProxy.request({
+       method: "ping",
+-      params: []
++      params: [],
++      id: Math.floor(Math.random() * 1000000000)
+     });
+     if ((pingResponse === null || pingResponse === void 0 ? void 0 : pingResponse.status) !== "success") {
+       const chain = this.getChain(chainId);
+diff --git a/dist/lib.cjs/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js b/dist/lib.cjs/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
+index 0961668d87badffbee58d58528d1c4fa3e9f130f..5f7231b009e992077558098243f121036e61aa84 100644
+--- a/dist/lib.cjs/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
++++ b/dist/lib.cjs/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
+@@ -20,7 +20,9 @@ function createRequestIdNormalizerMiddleware() {
+     request,
+     next
+   }) => {
+-    request.id = baseControllers.randomId();
++    try {
++      request.id = baseControllers.randomId();
++    } catch (e) {}
+     return next(request);
+   };
+ }
+diff --git a/dist/lib.esm/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js b/dist/lib.esm/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
+index 8845f31a339f0af90a4b8441bf9fa4da49896cb7..b1df91550f58b73137b1b8200516e942523f5acc 100644
+--- a/dist/lib.esm/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
++++ b/dist/lib.esm/providers/xrpl-provider/providers/privateKeyProviders/xrplPrivateKeyProvider.js
+@@ -87,7 +87,8 @@ class XrplPrivateKeyProvider extends BaseProvider {
+     if (!chainId) throw rpcErrors.invalidParams("chainId is required while lookupNetwork");
+     const pingResponse = await this._providerEngineProxy.request({
+       method: "ping",
+-      params: []
++      params: [],
++      id: Math.floor(Math.random() * 1000000000)
+     });
+     if ((pingResponse === null || pingResponse === void 0 ? void 0 : pingResponse.status) !== "success") {
+       const chain = this.getChain(chainId);
+diff --git a/dist/lib.esm/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js b/dist/lib.esm/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
+index be5e968a9887c7687b2db71e5fab3208b7c0539d..1d2743b594658ddbe94e33ba7e1a44f395e79a09 100644
+--- a/dist/lib.esm/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
++++ b/dist/lib.esm/providers/xrpl-provider/rpc/xrplRpcMiddlewares.js
+@@ -18,7 +18,9 @@ function createRequestIdNormalizerMiddleware() {
+     request,
+     next
+   }) => {
+-    request.id = randomId();
++    try {
++      request.id = randomId();
++    } catch (e) {}
+     return next(request);
+   };
+ }

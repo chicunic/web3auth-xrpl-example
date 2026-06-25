@@ -4,46 +4,18 @@ React + Vite example using MetaMask Embedded Wallets (powered by Web3Auth) on th
 
 Adapted from [Web3Auth/web3auth-examples/other/xrpl-example](https://github.com/Web3Auth/web3auth-examples/tree/main/other/xrpl-example).
 
+## Key Features & Optimizations
+
+- **React 19 Ready**: Codebase refactored to fully support React 19 strict mode.
+- **Zero Vulnerabilities**: Zombie dependencies (like legacy `elliptic` in `xrpl.js` and `vite-plugin-node-polyfills`) have been resolved via pnpm overrides to ensure a secure, 0-alert Dependabot status.
+- **Robust Modal Lifecycle**: Enhanced Web3Auth state management to prevent stuck "Connecting..." screens and UI glitches without relying on messy CSS hacks.
+- **Seamless MetaMask Login**: Pre-configured `Cross-Origin-Opener-Policy` headers to prevent browser from blocking external wallet popups.
+
 ## Prerequisites
 
-- Node.js 24+
+- Node.js 26+
 - pnpm
 - A Client ID from the [Dashboard](https://dashboard.web3auth.io)
-
-## Setup
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/chicunic/web3auth-xrpl-example.git
-cd web3auth-xrpl-example
-```
-
-### 2. Install dependencies
-
-```bash
-pnpm install
-```
-
-### 3. Configure environment variables
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-
-```text
-VITE_WEB3AUTH_CLIENT_ID=YOUR_CLIENT_ID
-```
-
-### 4. Run the application
-
-```bash
-pnpm dev
-```
-
-Visit `http://localhost:5173` in your browser.
 
 ## Resources
 
@@ -53,4 +25,4 @@ Visit `http://localhost:5173` in your browser.
 
 ## License
 
-[MIT](LICENSE)
+MIT
