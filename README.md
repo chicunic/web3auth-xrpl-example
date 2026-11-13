@@ -7,7 +7,7 @@ Adapted from [Web3Auth/web3auth-examples/other/xrpl-example](https://github.com/
 ## Key Features & Optimizations
 
 - **React 19 Ready**: Codebase refactored to fully support React 19 strict mode.
-- **Zero Vulnerabilities**: Zombie dependencies (like legacy `elliptic` in `xrpl.js` and `vite-plugin-node-polyfills`) have been resolved via pnpm overrides to ensure a secure, 0-alert Dependabot status.
+- **Dependency fixes**: pnpm overrides keep legacy `elliptic` out of the XRPL signing path and update `minimatch` to a fixed version. A local `deepmerge` patch addresses [GHSA-gcqx-w48m-w2h4](https://github.com/advisories/GHSA-gcqx-w48m-w2h4). Version-based scanners still flag `deepmerge@4.3.1` until an upstream fix is released and adopted.
 - **Robust Modal Lifecycle**: Enhanced Web3Auth state management to prevent stuck "Connecting..." screens and UI glitches without relying on messy CSS hacks.
 - **Seamless MetaMask Login**: Pre-configured `Cross-Origin-Opener-Policy` headers to prevent browser from blocking external wallet popups.
 
@@ -16,6 +16,16 @@ Adapted from [Web3Auth/web3auth-examples/other/xrpl-example](https://github.com/
 - Node.js 26+
 - pnpm
 - A Client ID from the [Dashboard](https://dashboard.web3auth.io)
+
+## Local development
+
+```sh
+cp -n .env.example .env.local
+pnpm install
+pnpm dev
+```
+
+The example includes a demo Client ID for Sapphire Devnet. To use your own project, set `VITE_WEB3AUTH_CLIENT_ID` in `.env.local` to its Client ID and restart Vite. For a deployment, set the variable before running `pnpm build`.
 
 ## Resources
 

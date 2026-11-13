@@ -3,13 +3,9 @@ import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK, type Web3AuthOptions } from '@web3a
 import { XrplPrivateKeyProvider } from '@web3auth/modal/providers/xrpl-provider';
 // IMP END - Quick Start
 
-// IMP START - Dashboard Registration
-const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID as string;
-// IMP END - Dashboard Registration
-
 const XRPL_TESTNET_CHAIN_ID = '0x6';
 
-export function getWeb3AuthContextConfig() {
+export function getWeb3AuthContextConfig(clientId: string) {
   // Chain configuration for XRPL
   const chain = {
     chainNamespace: CHAIN_NAMESPACES.XRPL,

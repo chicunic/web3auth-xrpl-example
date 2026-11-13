@@ -11,10 +11,24 @@ import App from './App';
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element #root not found');
 
+// IMP START - Dashboard Registration
+const clientId = import.meta.env.VITE_WEB3AUTH_CLIENT_ID?.trim();
+// IMP END - Dashboard Registration
+
+// IMP START - Setup Web3Auth Provider
 ReactDOM.createRoot(rootElement).render(
-  // IMP START - Setup Web3Auth Provider
-  <Web3AuthProvider config={getWeb3AuthContextConfig()}>
-    <App />
-  </Web3AuthProvider>,
-  // IMP END - Setup Web3Auth Provider
+  clientId ? (
+    <Web3AuthProvider config={getWeb3AuthContextConfig(clientId)}>
+      <App />
+    </Web3AuthProvider>
+  ) : (
+    <main className="container main">
+      <h1 className="title">Web3Auth Client ID required</h1>
+      <p>
+        Set <code>VITE_WEB3AUTH_CLIENT_ID</code> in <code>.env.local</code>, then restart the dev server or rebuild the
+        app.
+      </p>
+    </main>
+  ),
 );
+// IMP END - Setup Web3Auth Provider
